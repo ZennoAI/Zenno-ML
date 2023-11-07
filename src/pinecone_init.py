@@ -14,7 +14,7 @@ def initialize_vector_db():
     embedding = OpenAIEmbeddings(openai_api_key=api_key)
     pinecone.init(api_key=pinecone_api_key, environment=pinecone_env)
     index = pinecone.Index('customer')
-    vectorstore = Pinecone(index, embedding.embed_query, "text")
+    vectorstore = Pinecone(index, embedding, "text")
     
     retriever = vectorstore.as_retriever(search_type='similarity',
                                       search_kwargs={'k': 4})

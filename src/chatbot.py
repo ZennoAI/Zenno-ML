@@ -1,10 +1,12 @@
 import os
 import bentoml
+import openai
 from dotenv import load_dotenv
 from langchain.chat_models import ChatOpenAI
-from langchain.chains import ConversationalRetrievalChain
-from prompt_template import template
-from pinecone_init import initialize_vector_db
+from langchain.chains import ConversationalRetrievalChain, RetrievalQA
+from src.prompt_template import initial_template
+from src.pinecone_init import initialize_vector_db
+from langchain.llms import OpenLLM
 
 
 load_dotenv()
@@ -12,10 +14,11 @@ api_key = os.getenv("API_KEY")
 
 def load_chain():
   """Logic for loading the chain"""
-  prompt_template = template(
-
-  )
-  llm = ChatOpenAI(api_key, temperature=0)
+  llm: ChatOpenAI = ChatOpenAI(openai_api_key=api_key,
+                                streaming=True,
+                                temperature=0.0)
+  
+  prompt_template = initial_template()
 
   retriever = initialize_vector_db()
 

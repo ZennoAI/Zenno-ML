@@ -18,6 +18,7 @@ def initial_template():
                 Customer: Thank you for your help!
                 Chatbot: You're welcome! Is there anything else I can help you with today?
 
+                {context}
                 Current conversation:
                 {chat_history}
 
@@ -28,4 +29,4 @@ def initial_template():
     input_variables=['chat_history', 'human_input', 'context'], 
     template=template)
   
-  return template
+  return prompt_template
