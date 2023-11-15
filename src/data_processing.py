@@ -1,10 +1,6 @@
 import os
 import re
-import aiohttp
-import asyncio
-import openai
 import pinecone
-import requests
 from langchain.document_loaders import DirectoryLoader, TextLoader, JSONLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
@@ -89,10 +85,10 @@ class DataPreprocessor:
             msg = "No split data found. Skipping embedding..."
         return msg
             
-    def add_data(self):
+    def add_data(self, chunks):
       """Adds more data to the existing embeddings."""
       embeddings = OpenAIEmbeddings(openai_api_key=api_key)
       index = pinecone.Index("assuria")
       vectorstore = Pinecone(index, embeddings, "text")
-      vectorstore.add_texts(self.data)
-      return 'Data added successfully'
+      vectorstore.add_documents(chunks)
+      return 'Successfully added new data to the existing embeddings.'

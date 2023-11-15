@@ -1,4 +1,3 @@
-import json
 from bentoml.io import IODescriptor
 from typing import List, Any
 from ast import literal_eval

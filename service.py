@@ -41,9 +41,10 @@ def process_data(data: list()) -> str:
   
   return msg
 
-@add_data_svc.api(input=Text(), output=Text())
-def add_data(data: str) -> str:
+@add_data_svc.api(input=ArrayJSONIODescriptor(), output=Text())
+def add_data(data: list()) -> str:
   processor = DataPreprocessor(data)
-  msg = processor.add_data()
+  data_chunks = processor.process_data()
+  msg = processor.add_data(data_chunks)
   
   return msg
