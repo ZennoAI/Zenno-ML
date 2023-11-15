@@ -17,8 +17,8 @@ def create_vector_embeddings() -> Pinecone:
     """
     embedding = OpenAIEmbeddings(openai_api_key=api_key)
     pinecone.init(api_key=pinecone_api_key, environment=pinecone_env)
-
-    # Index name hardcoded for now
+    
+    # TODO: Index name hardcoded for now
     index = pinecone.Index('assuria')
     vectorstore = Pinecone(index, embedding, "text")
     

@@ -26,8 +26,8 @@ def summary_prompt_template():
                   new_lines: {new_lines}
                 """
                 
-  summary_template = PromptTemplate(
-    input_variables=['summary', 'new_lines'], template=template
-  )              
+  # summary_template = PromptTemplate(
+  #   input_variables=['summary', 'new_lines'], template=template
+  # )              
               
-  return summary_template
+  return template
