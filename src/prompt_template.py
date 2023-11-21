@@ -1,4 +1,5 @@
 from langchain.prompts import PromptTemplate
+import csv
 
 def initial_template():
   template =  """Je bent een behulpzame assistent die werkt voor een grote verzekeringsmaatschappij.
@@ -22,6 +23,7 @@ def initial_template():
 
 def summary_prompt_template():
   template =  """Vat de gespreksgeschiedenis samen en genereer een reactie die behulpzaam, informatief en beleefd is.
+                  Als je het antwoord niet weet, zeg dan gewoon dat je het niet weet, verzin geen antwoorden.
                   summary: {summary}
                   new_lines: {new_lines}
                 """

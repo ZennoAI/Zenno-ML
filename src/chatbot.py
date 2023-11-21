@@ -1,22 +1,18 @@
 import os
-import bentoml
-import openai
 from dotenv import load_dotenv
 from langchain.llms import OpenAI
-from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains import ConversationalRetrievalChain, RetrievalQA
+from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ChatMessageHistory
 from langchain.chains.conversation.memory import ConversationSummaryMemory
 from src.prompt_template import initial_template, summary_prompt_template
 from src.pinecone_init import create_vector_embeddings
-from langchain.llms import OpenLLM
 
 
 load_dotenv()
 api_key = os.getenv("API_KEY")
 
-def init_memory():
+def init_memory():   
   memory = ConversationSummaryMemory(
     llm=OpenAI(openai_api_key=api_key, temperature=0.0),
     chat_memory=ChatMessageHistory(),
@@ -33,9 +29,10 @@ def init_memory():
 
 def load_chain():
   """Logic for loading the chain"""
-  llm: ChatOpenAI = ChatOpenAI(openai_api_key=api_key,
+  llm: OpenAI = OpenAI(openai_api_key=api_key,
                                 streaming=True,
-                                temperature=0.0)
+                                temperature=0.0,
+                                max_tokens=1500)
   
   prompt_template = initial_template()
 
