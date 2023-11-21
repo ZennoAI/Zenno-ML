@@ -1,7 +1,6 @@
 import os
 import re
 import pinecone
-from langchain.document_loaders import DirectoryLoader, TextLoader, JSONLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import Pinecone
