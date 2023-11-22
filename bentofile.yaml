@@ -1,6 +1,10 @@
-service: 'service.py:svc'
+service: 'service.py:prompt_svc'
 labels:
-  owner: bentoml-team
+  owner: zenno
+  stage: dev
   project: zennoai
 include:
-- "*.py"
+  - "*.py"
+  - ".env"
+python:
+  requirements_txt: "./requirements.txt"

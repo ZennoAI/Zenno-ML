@@ -1,5 +1,4 @@
 from langchain.prompts import PromptTemplate
-import csv
 
 def initial_template():
   template =  """Je bent een behulpzame assistent die werkt voor een grote verzekeringsmaatschappij.
