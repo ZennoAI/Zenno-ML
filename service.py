@@ -20,7 +20,7 @@ add_data_svc = Service(
   'data-adder-service',
 )
 
-@prompt_svc.api(input=Text(), output=JSON())
+@prompt_svc.api(input=Text(), output=JSON(), route='api/v1/prompt')
 def prompt(prompt: str) -> str:
   resp = chain(prompt)
   print('resp_question:', resp['question'], '\n')
