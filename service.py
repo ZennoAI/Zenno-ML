@@ -20,7 +20,7 @@ add_data_svc = Service(
   'data-adder-service',
 )
 
-@prompt_svc.api(input=Text(), output=Text())
+@prompt_svc.api(input=Text(), output=JSON())
 def prompt(prompt: str) -> str:
   resp = chain(prompt)
   print('resp_question:', resp['question'], '\n')
@@ -31,7 +31,7 @@ def prompt(prompt: str) -> str:
   for source in resp['source_documents']:
       print(source.metadata['url'], '\n')
       
-  return resp['answer']
+  return resp
 
 @process_data_svc.api(input=ArrayJSONIODescriptor(), output=Text())
 def process_data(data: list()) -> str:
