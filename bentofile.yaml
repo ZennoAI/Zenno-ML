@@ -1,4 +1,4 @@
-service: 'service.py:prompt_svc'
+service: 'service.py:svc'
 labels:
   owner: zenno
   stage: dev

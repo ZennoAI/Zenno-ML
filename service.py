@@ -8,19 +8,11 @@ from src.array_json_io import ArrayJSONIODescriptor
 chain = load_chain()
 processor = DataPreprocessor(data)
 
-prompt_svc = Service(
-  'llm-zenno-service',
+svc = Service(
+  'zenno-api-service',
 )
 
-process_data_svc = Service(
-  'data-processor-service',
-)
-
-add_data_svc = Service(
-  'data-adder-service',
-)
-
-@prompt_svc.api(input=Text(), output=JSON(), route='api/v1/prompt')
+@svc.api(input=Text(), output=JSON(), route='api/v1/prompt')
 def prompt(prompt: str) -> str:
   resp = chain(prompt)
   print('resp_question:', resp['question'], '\n')
@@ -33,7 +25,7 @@ def prompt(prompt: str) -> str:
       
   return resp
 
-@process_data_svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/process_data')
+@svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/process_data')
 def process_data(data: list()) -> str:
   processor = DataPreprocessor(data)
   data_chunks = processor.process_data()
@@ -41,7 +33,7 @@ def process_data(data: list()) -> str:
   
   return msg
 
-@add_data_svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/add_data')
+@svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/add_data')
 def add_data(data: list()) -> str:
   processor = DataPreprocessor(data)
   data_chunks = processor.process_data()
