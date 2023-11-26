@@ -1,5 +1,5 @@
-from bentoml import Service, io
-from bentoml.io import Text, JSON, PandasDataFrame
+from bentoml import Service
+from bentoml.io import Text, JSON
 from src.chatbot import load_chain
 from src.data_processing import DataPreprocessor
 from src.data import data
@@ -33,7 +33,7 @@ def prompt(prompt: str) -> str:
       
   return resp
 
-@process_data_svc.api(input=ArrayJSONIODescriptor(), output=Text())
+@process_data_svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/process_data')
 def process_data(data: list()) -> str:
   processor = DataPreprocessor(data)
   data_chunks = processor.process_data()
@@ -41,7 +41,7 @@ def process_data(data: list()) -> str:
   
   return msg
 
-@add_data_svc.api(input=ArrayJSONIODescriptor(), output=Text())
+@add_data_svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/add_data')
 def add_data(data: list()) -> str:
   processor = DataPreprocessor(data)
   data_chunks = processor.process_data()
