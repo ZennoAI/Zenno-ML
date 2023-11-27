@@ -1,7 +1,7 @@
 version: 1.0  
 api_server:
   http:
-    port: 5000
+    port: 3000
     cors:
       enabled: true
       access_control_allow_origins: ["*"]
