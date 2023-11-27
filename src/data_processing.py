@@ -15,7 +15,7 @@ pinecone_api_key = os.getenv("PINECONE_API_KEY")
 
 
 class DataPreprocessor:
-    def __init__(self, data):
+    def __init__(self, data=None):
         self.data = data
         
 
@@ -61,7 +61,7 @@ class DataPreprocessor:
         return split_document
       
 
-    def embed_data(self, chunks):
+    def create_embeddings_index(self, chunks):
         """Embeds the data using the OpenAI embeddings model."""
         embeddings = OpenAIEmbeddings(openai_api_key=api_key)
         pinecone.init(api_key=pinecone_api_key, environment=pinecone_env)
@@ -84,10 +84,27 @@ class DataPreprocessor:
             msg = "No split data found. Skipping embedding..."
         return msg
             
-    def add_data(self, chunks):
+    def update_embeddings_index(self, chunks):
       """Adds more data to the existing embeddings."""
       embeddings = OpenAIEmbeddings(openai_api_key=api_key)
       index = pinecone.Index("assuria")
       vectorstore = Pinecone(index, embeddings, "text")
       vectorstore.add_documents(chunks)
       return 'Successfully added new data to the existing embeddings.'
+    
+    def delete_index(self, index_name):
+      """Delete the entire index."""
+      # TODO: Index name hardcoded for now
+      pinecone.delete_index(index_name)
+      return 'Successfully deleted the index.'
+    
+    def delete_embedding(self, url):
+      """Delete a specific embedding."""
+      # embeddings = OpenAIEmbeddings(openai_api_key=api_key)
+      index = pinecone.Index("assuria")
+      index.delete(
+      filter={"url": url})
+      # vectorstore = Pinecone(index, embeddings, "text")
+      # vectorstore.delete(filter={'metadata.url': url})
+      return 'Successfully deleted the embedding.'
+    
