@@ -6,7 +6,7 @@ from src.data import data
 from src.array_json_io import ArrayJSONIODescriptor
 
 chain = load_chain()
-# processor = DataPreprocessor(data)
+# processor = DataPreprocessor(data)g
 
 svc = Service(
   'zenno-api-service',
@@ -41,14 +41,15 @@ def update_embeddings_index(data: list()) -> str:
   
   return msg
 
-@svc.api(input=Text(), output=Text(), route='api/v1/delete_embedding')
+@svc.api(input=Text(), output=Text(), route='api/v1/delete_embedding',)
 def delete_embedding(url: str) -> str:
   processor = DataPreprocessor()
   msg = processor.delete_embedding(url)
   return msg
 
-@svc.api(input=Text(), output=Text(), route='api/v1/delete_index')
+@svc.api(input=Text(), output=Text(), route='api/v1/delete_index', )
 def delete_index(index_name: str) -> str:
   processor = DataPreprocessor()
   msg = processor.delete_index(index_name)
   return msg
+
