@@ -1,14 +1,12 @@
 service: 'service.py:svc'
-name: 'customer-service-bot'
+name: 'customer-support-api-service'
 labels:
   owner: zennoai-team
   stage: dev
-  project: customer-service-bot
+  project: customer-support-api-service
 include:
   - "*.py"
   - ".env"
-  - "/cofig"
+  - "/config"
 python:
   requirements_txt: "./requirements.txt"
-env:
-  BENTOML_CONFIG: './config/bento_config.yaml'
