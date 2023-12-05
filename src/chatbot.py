@@ -6,7 +6,7 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ChatMessageHistory
 from langchain.chains.conversation.memory import ConversationSummaryMemory
 from src.prompt_template import initial_template, summary_prompt_template
-from retriever import create_retriever
+from src.retriever import create_retriever
 
 
 load_dotenv()
