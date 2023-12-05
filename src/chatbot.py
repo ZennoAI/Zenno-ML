@@ -6,11 +6,13 @@ from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ChatMessageHistory
 from langchain.chains.conversation.memory import ConversationSummaryMemory
 from src.prompt_template import initial_template, summary_prompt_template
-from src.pinecone_init import create_vector_embeddings
+from retriever import create_retriever
 
 
 load_dotenv()
 api_key = os.getenv("API_KEY")
+pinecone_env = os.environ.get("PINECONE_ENV")
+pinecone_api_key = os.environ.get("PINECONE_API_KEY")
 
 def init_memory():   
   memory = ConversationSummaryMemory(
@@ -36,7 +38,7 @@ def load_chain():
   
   prompt_template = initial_template()
 
-  retriever = create_vector_embeddings()
+  retriever = create_retriever(api_key, pinecone_api_key, pinecone_env)
 
   customer_service_chain = ConversationalRetrievalChain.from_llm(
     llm,
