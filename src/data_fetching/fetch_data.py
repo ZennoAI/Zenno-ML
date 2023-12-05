@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 web_scraper_url = os.getenv("WEB_SCRAPER_URL")
+node_api_url = os.getenv("NODE_API_URL")
 api_key = os.getenv("API_KEY")
 pinecone_env = os.getenv("PINECONE_ENV")
 pinecone_api_key = os.getenv("PINECONE_API_KEY")
@@ -96,3 +97,10 @@ class PDFUploadedData(BaseDataFetcher):
       
     def fetch_data_from_uploaded_pdfs(self, data):
       return self.fetch_data('upload_pdf', data)
+    
+    
+web_scraper_endpoint = 'scrape/cheerio'
+pdf_upload_end = 'pdf/upload'
+
+web_scraper = WebSraperData(web_scraper_url, data_dir)
+pdf_upload = PDFUploadedData(node_api_url, data_dir)
