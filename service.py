@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 from bentoml import Service
 from bentoml.io import Text, JSON
 from src.chatbot import load_chain
-from src.data_processing import DataPreprocessor
-from src.data_processing import EmbeddingsManager
+from src.data_processing import DataProcessor
+from src.vector_store import VectorStoreManager
 from src.data import data
 from src.array_json_io import ArrayJSONIODescriptor
 
@@ -55,7 +55,7 @@ def create_embeddings_index(data: list()) -> str:
   Returns:
       str: a message indicating the status of the embeddings index creation
   """
-  handler = APIHandler(DataPreprocessor(data), EmbeddingsManager(api_key, pinecone_api_key, pinecone_env))
+  handler = APIHandler(DataProcessor(data), VectorStoreManager(api_key, pinecone_api_key, pinecone_env))
   data_chunks = handler.data_processor.process_data()
   msg = handler.embeddings_manager.create_embeddings(data_chunks)
   
@@ -69,7 +69,7 @@ def update_embeddings_index(data: list()) -> str:
   Returns:
       str: a message indicating the status of the embeddings index update
   """
-  handler = APIHandler(DataPreprocessor(data), EmbeddingsManager(api_key, pinecone_api_key, pinecone_env))
+  handler = APIHandler(DataProcessor(data), VectorStoreManager(api_key, pinecone_api_key, pinecone_env))
   data_chunks = handler.data_processor.process_data()
   msg = handler.embeddings_manager.update_embeddings_index(data_chunks)
   
@@ -83,7 +83,7 @@ def delete_embedding(url: str) -> str:
   Returns:
       str: a message indicating the status of the embedding deletion
   """
-  handler = APIHandler(None, EmbeddingsManager(api_key, pinecone_api_key, pinecone_env))
+  handler = APIHandler(None, VectorStoreManager(api_key, pinecone_api_key, pinecone_env))
   msg = handler.embeddings_manager.delete_embedding(url)
   return msg
 
@@ -95,7 +95,7 @@ def delete_index(index_name: str) -> str:
   Returns:
       str: a message indicating the status of the index deletion
   """
-  handler = APIHandler(None, EmbeddingsManager(api_key, pinecone_api_key, pinecone_env))
+  handler = APIHandler(None, VectorStoreManager(api_key, pinecone_api_key, pinecone_env))
   msg = handler.embeddings_manager.delete_index(index_name)
   return msg
 
