@@ -1,0 +1,13 @@
+api_server:
+  http:
+    port: 3000
+    cors:
+      enabled: true
+      access_control_allow_origins: "*"
+      access_control_allow_methods: ["GET", "OPTIONS", "POST", "HEAD", "PUT"]
+      access_control_allow_headers: "*"
+      access_control_allow_origin_regex: Null
+      access_control_max_age: Null
+      access_control_expose_headers: ["Content-Length"]
+  ssl:
+    enabled: true

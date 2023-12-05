@@ -1,10 +1,12 @@
 service: 'service.py:svc'
+name: 'customer-support-api-service'
 labels:
-  owner: zenno
+  owner: zennoai-team
   stage: dev
-  project: zennoai
+  project: customer-support-api-service
 include:
   - "*.py"
   - ".env"
+  - "/config"
 python:
   requirements_txt: "./requirements.txt"
