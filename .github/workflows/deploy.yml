@@ -1,0 +1,27 @@
+name: Deploy to BentoCloud
+on:
+  push:
+    paths:
+      - 'deployment.json'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - uses: bentoml/setup-bentoml-action@v1
+        with:
+          python-version: "3.11"
+          bentoml-version: ${{ inputs.bentoml_version }}
+      - name: Login to Bento Cloud
+        shell: bash
+        run: |
+          echo "Login to Cloud Console at ${{ secrets.BENTOCLOUD_ENDPOINT }}"
+          bentoml cloud login --api-token ${{ secrets.BENTOCLOUD_API_KEY }} --endpoint ${{ secrets.BENTOCLOUD_ENDPOINT }}
+      - name: Update Deployment in Bento Cloud
+        shell: bash
+        run: bentoml deployment update -f deployment.json
