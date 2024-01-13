@@ -7,7 +7,7 @@ from src.data_processing import DataProcessor
 from src.vector_store import VectorStoreManager
 from src.data import data
 from src.array_json_io import ArrayJSONIODescriptor 
-from src.logs.whylogs import log_prompt_respnse
+from src.logs.whylogs import log_prompt_response, is_not_toxic
 
 load_dotenv()
 
@@ -37,19 +37,26 @@ def prompt_response(prompt: str) -> str:
       str: a response from the prompt
   """
   chain = load_chain()
-  resp = chain(prompt)
   
-  log_prompt_respnse(prompt, resp)
+  result = None
   
-  print('resp_question:', resp['question'], '\n')
-  print('resp_answer:', resp['answer'], '\n')
-  print('resp_history:', resp['chat_history'], '\n')
+  if is_not_toxic(prompt):
+    result = chain(prompt)
   
-  print('\n\nSources:')
-  for source in resp['source_documents']:
-      print(source.metadata['url'], '\n')
-      
-  return resp
+    print('resp_question:', result['question'], '\n')
+    print('resp_answer:', result['answer'], '\n')
+    print('resp_history:', result['chat_history'], '\n')
+    
+    print('\n\nSources:')
+    for source in result['source_documents']:
+        print(source.metadata['url'], '\n')
+        
+  else:
+    result = {'answer': 'Sorry, I cannot answer that question. Please try again.'}
+    
+  log_prompt_response(prompt, result['answer'])
+  
+  return result
 
 @svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/create_embeddings')
 def create_embeddings_index(data: list()) -> str:
