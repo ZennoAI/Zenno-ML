@@ -1,0 +1,50 @@
+{
+    "name": "zennoapi",
+    "mode": "function",
+    "cluster_name": "aws-us-west-1",
+    "kube_namespace": "org-kiko--aws-us-west-1",
+    "targets": [
+        {
+            "type": "stable",
+            "bento_repository": "customer-support-api-service",
+            "bento": "jjafnouptgtlxytg",
+            "canary_rules": null,
+            "config": {
+                "resource_instance": "starter-aws-t3-2xlarge-cpu-small",
+                "resources": {
+                    "requests": {
+                        "cpu": "500m",
+                        "memory": "500Mi"
+                    },
+                    "limits": {
+                        "cpu": "1000m",
+                        "memory": "1024Mi"
+                    }
+                },
+                "hpa_conf": {
+                    "min_replicas": 0,
+                    "max_replicas": 2,
+                    "policy": {
+                        "scale_down_behavior": "stable",
+                        "scale_up_behavior": "fast"
+                    }
+                },
+                "envs": [
+                    {
+                        "key": "BENTOML_CONFIG_OPTIONS",
+                        "value": "api_server.http.cors.enabled=true\napi_server.http.cors.access_control_allow_origins=http://localhost:5137\napi_server.http.cors.access_control_allow_methods[0]=GET\napi_server.http.cors.access_control_allow_methods[1]=OPTIONS\napi_server.http.cors.access_control_allow_methods[2]=POST\napi_server.http.cors.access_control_allow_methods[3]=HEAD\napi_server.http.cors.access_control_allow_methods[4]=PUT\napi_server.http.cors.access_control_allow_credentials=true\napi_server.http.cors.access_control_allow_headers=Content-Type\napi_server.http.cors.access_control_allow_origin_regex=null\napi_server.http.cors.access_control_max_age=null\napi_server.http.cors.access_control_expose_headers=Content-Length"
+                    }
+                ],
+                "access_control": "public",
+                "deployment_strategy": "RollingUpdate",
+                "traffic_control": {
+                    "timeout": "1m0s",
+                    "request_queue": {
+                        "enabled": true,
+                        "max_consume_concurrency": 32
+                    }
+                }
+            }
+        }
+    ]
+}
