@@ -34,8 +34,8 @@ svc = Service(
   'zenno-api-service',
 )
 
-@svc.api(input=Text(), output=JSON(), route='api/v1/generate_prompt')
-def generate_prompt(prompt: str) -> str:
+@svc.api(input=Text(), output=JSON(), route='api/v1/prompt_response')
+def prompt_response(prompt: str) -> str:
   """Generates a response from the prompt.
   Args:
       prompt (str): a prompt to generate a response from
