@@ -6,7 +6,8 @@ from src.chatbot import load_chain
 from src.data_processing import DataProcessor
 from src.vector_store import VectorStoreManager
 from src.data import data
-from src.array_json_io import ArrayJSONIODescriptor
+from src.array_json_io import ArrayJSONIODescriptor 
+from src.logs.whylogs import log_prompt_response, is_not_toxic
 
 load_dotenv()
 
@@ -27,8 +28,8 @@ svc = Service(
   'zenno-api-service',
 )
 
-@svc.api(input=Text(), output=JSON(), route='api/v1/generate_prompt')
-def generate_prompt(prompt: str) -> str:
+@svc.api(input=Text(), output=JSON(), route='api/v1/prompt_response')
+def prompt_response(prompt: str) -> str:
   """Generates a response from the prompt.
   Args:
       prompt (str): a prompt to generate a response from
@@ -36,16 +37,26 @@ def generate_prompt(prompt: str) -> str:
       str: a response from the prompt
   """
   chain = load_chain()
-  resp = chain(prompt)
-  print('resp_question:', resp['question'], '\n')
-  print('resp_answer:', resp['answer'], '\n')
-  print('resp_history:', resp['chat_history'], '\n')
   
-  print('\n\nSources:')
-  for source in resp['source_documents']:
-      print(source.metadata['url'], '\n')
-      
-  return resp
+  result = None
+  
+  if is_not_toxic(prompt):
+    result = chain(prompt)
+  
+    print('resp_question:', result['question'], '\n')
+    print('resp_answer:', result['answer'], '\n')
+    print('resp_history:', result['chat_history'], '\n')
+    
+    print('\n\nSources:')
+    for source in result['source_documents']:
+        print(source.metadata['url'], '\n')
+        
+  else:
+    result = {'answer': 'Sorry, I cannot answer that question. Please try again.'}
+    
+  log_prompt_response(prompt, result['answer'])
+  
+  return result
 
 @svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/create_embeddings')
 def create_embeddings_index(data: list()) -> str:
@@ -97,5 +108,6 @@ def delete_index(index_name: str) -> str:
   """
   handler = APIHandler(None, VectorStoreManager(api_key, pinecone_api_key, pinecone_env))
   msg = handler.embeddings_manager.delete_index(index_name)
+  
   return msg
 
