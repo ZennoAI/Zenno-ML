@@ -6,10 +6,8 @@ from src.chatbot import load_chain
 from src.data_processing import DataProcessor
 from src.vector_store import VectorStoreManager
 from src.data import data
-from src.array_json_io import ArrayJSONIODescriptor
-from langkit import llm_metrics
-import whylogs as why
-from whylogs.api.writer.whylabs import WhyLabsWriter
+from src.array_json_io import ArrayJSONIODescriptor 
+from src.logs.whylogs import log_prompt_respnse
 
 load_dotenv()
 
@@ -17,11 +15,7 @@ web_scraper_url = os.getenv("WEB_SCRAPER_URL")
 api_key = os.getenv("API_KEY")
 pinecone_env = os.getenv("PINECONE_ENV")
 pinecone_api_key = os.getenv("PINECONE_API_KEY")
-whylab_api_key = os.environ.get("WHYLAB_API_KEY")
-whylab_org_id = os.environ.get("WHYLAB_ORG_ID")
-whylab_model_id = os.environ.get("WHYLAB_MODEL_ID")
 
-schema = llm_metrics.init()
 
 class APIHandler:
   """Handles the API requests.
@@ -45,14 +39,7 @@ def prompt_response(prompt: str) -> str:
   chain = load_chain()
   resp = chain(prompt)
   
-  telemetry_agent = WhyLabsWriter(api_key=whylab_api_key, org_id=whylab_org_id, dataset_id=whylab_model_id)
-  prompt_and_response = {
-    'prompt': prompt,
-    'response': resp['answer'],
-  }
-  
-  profile = why.log(prompt_and_response, schema=schema).profile()
-  telemetry_agent.write(profile.view())
+  log_prompt_respnse(prompt, resp)
   
   print('resp_question:', resp['question'], '\n')
   print('resp_answer:', resp['answer'], '\n')
