@@ -108,5 +108,6 @@ def delete_index(index_name: str) -> str:
   """
   handler = APIHandler(None, VectorStoreManager(api_key, pinecone_api_key, pinecone_env))
   msg = handler.embeddings_manager.delete_index(index_name)
+  
   return msg
 
