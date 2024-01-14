@@ -22,6 +22,6 @@ jobs:
           python_version: '3.11'
           build: 'true'
           action: skip
-          deployment_name: customer-service-cicd
+          deployment_name: zennoapi
           cloud_api_token: ${{ secrets.BENTOCLOUD_API_KEY }}
           cloud_endpoint: ${{ secrets.BENTOCLOUD_ENDPOINT }}
