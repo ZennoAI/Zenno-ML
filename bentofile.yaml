@@ -8,7 +8,5 @@ include:
   - "*.py"
   - ".env"
   - "/config"
-models:
-  - tag: "iris_clf:version1"
 python:
   requirements_txt: "./requirements.txt"
