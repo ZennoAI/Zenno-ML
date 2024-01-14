@@ -1,8 +1,6 @@
 name: Deploy to BentoCloud
 on:
   push:
-    branches:
-      - main
     paths:
       - 'deployment.json'
 jobs:
