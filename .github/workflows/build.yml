@@ -12,14 +12,14 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python_version: '3.11'
+          python-version: '3.11'
           cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Build
         uses: ZennoAI/deploy-bento-action@main
         with:
-          python_version: '3.11'
+          python-version: '3.11'
           build: 'true'
           action: skip
           deployment_name: zennoapi
