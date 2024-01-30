@@ -8,6 +8,7 @@ from src.vector_store import VectorStoreManager
 from src.data import data
 from src.array_json_io import ArrayJSONIODescriptor 
 from src.llm_monitoring.whylogs import log_prompt_response, is_not_toxic
+from src.lllm_security.security import is_not_prompt_injection
 
 load_dotenv()
 
@@ -40,19 +41,22 @@ def prompt_response(prompt: str) -> str:
   
   result = None
   
-  if is_not_toxic(prompt):
-    result = chain(prompt)
-  
-    print('resp_question:', result['question'], '\n')
-    print('resp_answer:', result['answer'], '\n')
-    print('resp_history:', result['chat_history'], '\n')
-    
-    print('\n\nSources:')
-    for source in result['source_documents']:
-        print(source.metadata['url'], '\n')
-        
+  if is_not_prompt_injection(prompt):
+    if is_not_toxic(prompt):
+      result = chain(prompt)
+      print('resp_question:', result['question'], '\n')
+      print('resp_answer:', result['answer'], '\n')
+      print('resp_history:', result['chat_history'], '\n')
+      
+      print('\n\nSources:')
+      for source in result['source_documents']:
+          print(source.metadata['url'], '\n')
+          
+    else:
+      result = {'answer': 'Sorry, I cannot answer that question. Please try again.'}
+          
   else:
-    result = {'answer': 'Sorry, I cannot answer that question. Please try again.'}
+    result = {'answer': 'Sorry, I cannot answer that question. Do you have any other questions I can help you with?.'}
     
   log_prompt_response(prompt, result['answer'])
   
