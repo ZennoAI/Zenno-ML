@@ -1,15 +1,15 @@
 import os
 from dotenv import load_dotenv
-from langchain.llms import OpenAI
+from langchain_openai import OpenAIEmbeddings
+from langchain_openai  import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ChatMessageHistory
 from langchain.chains.conversation.memory import ConversationSummaryMemory
 from src.prompt_template import initial_template, summary_prompt_template
 from src.retriever import create_retriever
-from langchain.callbacks import WhyLabsCallbackHandler
+from langchain_community.callbacks import WhyLabsCallbackHandler
 from langkit import llm_metrics
-
 
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -25,7 +25,7 @@ schema = llm_metrics.init()
 def init_memory():   
   conversation_summary_with_memory = ConversationSummaryMemory(
     llm=OpenAI(openai_api_key=openai_api_key, temperature=0.0, model='gpt-3.5-turbo-instruct'),
-    chat_memory=ChatMessageHistory(),
+    # chat_memory=ChatMessageHistory(),
     prompt=summary_prompt_template(),
     input_key='question',
     return_messages=True,

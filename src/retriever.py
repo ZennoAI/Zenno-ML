@@ -1,5 +1,5 @@
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import Pinecone
+from langchain_openai import OpenAIEmbeddings
+from langchain_pinecone import Pinecone
 import pinecone
 
 def create_retriever(api_key: str, pinecone_api_key: str, pinecone_env: str) -> Pinecone:
@@ -12,12 +12,13 @@ def create_retriever(api_key: str, pinecone_api_key: str, pinecone_env: str) -> 
         PineconeRetriever: A retriever for vector embeddings search.
     """
     embedding = OpenAIEmbeddings(openai_api_key=api_key)
-    pinecone.init(api_key=pinecone_api_key, environment=pinecone_env)
-    
     # TODO: Index name hardcoded for now
-    index = pinecone.Index('assuria')
-    vectorstore = Pinecone(index, embedding, "text")
+    vectorstore = Pinecone(
+      pinecone_api_key=pinecone_api_key, 
+      index_name='assuria', 
+      embedding=embedding
+      )
     
-    retriever = vectorstore.as_retriever(search_type='similarity', search_kwargs={'k': 2})
+    retriever = vectorstore.as_retriever(search_type='similarity', search_kwargs={'k': 1})
 
     return retriever

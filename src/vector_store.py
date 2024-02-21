@@ -1,6 +1,6 @@
 import pinecone
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import Pinecone
+from langchain_openai import OpenAIEmbeddings
+from langchain_pinecone import Pinecone
 
 
 class VectorStoreManager():
