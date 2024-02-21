@@ -220,7 +220,7 @@ ptyprocess==0.7.0
 pure-eval==0.2.2
 py-spy==0.3.14
 py4j==0.10.9.7
-pyarrow==15.0.0
+pyarrow>=15.0.0
 pyarrow-hotfix==0.6
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
