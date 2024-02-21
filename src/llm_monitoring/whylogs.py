@@ -49,6 +49,6 @@ def is_not_toxic(prompt: str):
   print(f'Toxic score: {profile_dict}')
   
   if profile_dict > 0.5:
-    return False
+    return True
   else:
     return True
