@@ -25,7 +25,7 @@ schema = llm_metrics.init()
 def init_memory():   
   conversation_summary_with_memory = ConversationSummaryMemory(
     llm=OpenAI(openai_api_key=openai_api_key, temperature=0.0, model='gpt-3.5-turbo-instruct'),
-    chat_memory=ChatMessageHistory(),
+    # chat_memory=ChatMessageHistory(),
     prompt=summary_prompt_template(),
     input_key='question',
     return_messages=True,
