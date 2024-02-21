@@ -41,29 +41,29 @@ def prompt_response(prompt: str) -> str:
   
   result = None
   
-  if is_not_prompt_injection(prompt):
-    if is_not_toxic(prompt):
-      result = chain(prompt)
-      print('resp_question:', result['question'], '\n')
-      print('resp_answer:', result['answer'], '\n')
-      print('resp_history:', result['chat_history'], '\n')
-      
-      print('\n\nSources:')
-      for source in result['source_documents']:
-          print(source.metadata['url'], '\n')
+  # if is_not_prompt_injection(prompt):
+  #   if is_not_toxic(prompt):
+  result = chain(prompt)
+  print('resp_question:', result['question'], '\n')
+  print('resp_answer:', result['answer'], '\n')
+  print('resp_history:', result['chat_history'], '\n')
+  
+  print('\n\nSources:')
+  for source in result['source_documents']:
+      print(source.metadata['url'], '\n')
           
-    else:
-      result = {'answer': 'Sorry, I cannot answer that question. Please try again.'}
+  #   else:
+  #     result = {'answer': 'Sorry, I cannot answer that question. Please try again.'}
           
-  else:
-    result = {'answer': 'Sorry, I cannot answer that question. Do you have any other questions I can help you with?.'}
+  # else:
+  #   result = {'answer': 'Sorry, I cannot answer that question. Do you have any other questions I can help you with?.'}
     
-  log_prompt_response(prompt, result['answer'])
+  # log_prompt_response(prompt, result['answer'])
   
   return result
 
 @svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/create_embeddings')
-def create_embeddings_index(data: list()) -> str:
+def create_embeddings_index(data: list) -> str:
   """Creates an embeddings index from the data.
   Args:
       data (list): a list of data to create embeddings from
@@ -77,7 +77,7 @@ def create_embeddings_index(data: list()) -> str:
   return msg
 
 @svc.api(input=ArrayJSONIODescriptor(), output=Text(), route='api/v1/update_embeddings')
-def update_embeddings_index(data: list()) -> str:
+def update_embeddings_index(data: list) -> str:
   """Updates the embeddings index with new data.
   Args:
       data (list): a list of data to update the embeddings index with
