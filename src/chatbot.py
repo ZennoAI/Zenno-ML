@@ -8,7 +8,6 @@ from langchain.memory import ChatMessageHistory
 from langchain.chains.conversation.memory import ConversationSummaryMemory
 from src.prompt_template import initial_template, summary_prompt_template
 from src.retriever import create_retriever
-from langchain_community.callbacks import WhyLabsCallbackHandler
 from langkit import llm_metrics
 
 load_dotenv()
