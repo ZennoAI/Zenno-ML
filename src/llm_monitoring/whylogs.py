@@ -13,6 +13,12 @@ whylab_model_id = os.environ.get("WHYLAB_MODEL_ID")
 schema = llm_metrics.init()
 
 def log_prompt_response(prompt: str, resp: str):
+  """Logs the prompt and response to WhyLabs.
+
+  Args:
+      prompt (str): a prompt to generate a response from
+      resp (str): a response from the prompt
+  """
   telemetry_agent = WhyLabsWriter(
     api_key=whylab_api_key, 
     org_id=whylab_org_id, 
@@ -29,6 +35,14 @@ def log_prompt_response(prompt: str, resp: str):
   
 
 def is_not_toxic(prompt: str):
+  """Checks if the prompt is toxic.
+
+  Args:
+      prompt (str): a prompt to generate a response from
+
+  Returns:
+      _type_: returns True if the prompt is not toxic, False otherwise
+  """
   profile = why.log({'prompt': prompt}, schema=schema).profile().view()
   profile_dict = profile.get_column('prompt.toxicity').to_summary_dict()['distribution/mean']
   

@@ -12,20 +12,20 @@ from langkit import llm_metrics
 
 
 load_dotenv()
-api_key = os.getenv("API_KEY")
+openai_api_key = os.getenv("OPENAI_API_KEY")
 pinecone_env = os.environ.get("PINECONE_ENV")
 pinecone_api_key = os.environ.get("PINECONE_API_KEY")
 whylab_api_key = os.environ.get("WHYLAB_API_KEY")
 whylab_org_id = os.environ.get("WHYLAB_ORG_ID")
 
-# whylabs = WhyLabsCallbackHandler.from_params(api_key=whylab_api_key, org_id=whylab_org_id)
+# whylabs = WhyLabsCallbackHandler.from_params(openai_api_key=whylab_api_key, org_id=whylab_org_id)
 
 schema = llm_metrics.init()
 
 def init_memory():   
-  memory = ConversationSummaryMemory(
-    llm=OpenAI(openai_api_key=api_key, temperature=0.0, model='gpt-3.5-turbo-instruct'),
-    chat_memory=ChatMessageHistory(),
+  conversation_summary_with_memory = ConversationSummaryMemory(
+    llm=OpenAI(openai_api_key=openai_api_key, temperature=0.0, model='gpt-3.5-turbo-instruct'),
+    # chat_memory=ChatMessageHistory(),
     prompt=summary_prompt_template(),
     input_key='question',
     return_messages=True,
@@ -35,11 +35,11 @@ def init_memory():
     output_key='answer',
   )
   
-  return memory
+  return conversation_summary_with_memory
 
 def load_chain():
   """Logic for loading the chain"""
-  llm: OpenAI = OpenAI(openai_api_key=api_key,
+  llm: OpenAI = OpenAI(openai_api_key=openai_api_key,
                                 streaming=True,
                                 temperature=0.0,
                                 max_tokens=1500,
@@ -48,7 +48,7 @@ def load_chain():
   
   prompt_template = initial_template()
 
-  retriever = create_retriever(api_key, pinecone_api_key, pinecone_env)
+  retriever = create_retriever(openai_api_key, pinecone_api_key, pinecone_env)
 
   customer_service_chain = ConversationalRetrievalChain.from_llm(
     llm,
